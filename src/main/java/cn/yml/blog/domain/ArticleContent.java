@@ -5,7 +5,7 @@ import cn.yml.blog.common.domain.AbstractDomain;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tbl_article_content")
+@Table(name="article_content")
 public class ArticleContent extends AbstractDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

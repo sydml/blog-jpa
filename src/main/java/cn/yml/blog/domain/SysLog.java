@@ -18,8 +18,8 @@ public class SysLog implements Serializable {
 
     private String ip;
 
-    @Column(name="create_by")
-    private LocalDateTime createBy;
+    @Column(name="create_time")
+    private LocalDateTime createTime;
 
     private String remark;
 
@@ -45,12 +45,12 @@ public class SysLog implements Serializable {
         this.ip = ip;
     }
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     public String getRemark() {

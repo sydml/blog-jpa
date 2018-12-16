@@ -5,8 +5,8 @@ import cn.yml.blog.common.domain.AbstractDomain;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tbl_category_info")
-public class CategoryInfo extends AbstractDomain{
+@Table(name="category")
+public class Category extends AbstractDomain{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

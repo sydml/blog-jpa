@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="tbl_comment")
+@Table(name="comment")
 public class Comment implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,8 +13,8 @@ public class Comment implements Serializable{
 
     private String content;
 
-    @Column(name="create_by")
-    private LocalDateTime createBy;
+    @Column(name="create_time")
+    private LocalDateTime createTime;
 
     private String email;
 
@@ -41,12 +41,12 @@ public class Comment implements Serializable{
         this.content = content == null ? null : content.trim();
     }
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     public String getEmail() {

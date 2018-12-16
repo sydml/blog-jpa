@@ -25,10 +25,9 @@ import java.time.LocalDateTime;
 public class ForeInterceptor implements HandlerInterceptor {
 
     @Autowired
-    SysService sysService;
+    private SysService sysService;
 
-    private SysLog sysLog = new SysLog();
-    private SysView sysView = new SysView();
+    private static ThreadLocal<SysLog> sysLogThreadLocal = new ThreadLocal<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -38,16 +37,18 @@ public class ForeInterceptor implements HandlerInterceptor {
         // 访问地址
         String url = request.getRequestURL().toString();
         //得到用户的浏览器名
-        String userbrowser = BrowserUtil.getOsAndBrowserInfo(request);
+        String userBrowser = BrowserUtil.getOsAndBrowserInfo(request);
 
         // 给SysLog增加字段
+        SysLog sysLog = new SysLog();
+        SysView sysView = new SysView();
         sysLog.setIp(StringUtils.isEmpty(ip) ? "0.0.0.0" : ip);
-        sysLog.setOperateBy(StringUtils.isEmpty(userbrowser) ? "获取浏览器名失败" : userbrowser);
+        sysLog.setOperateBy(StringUtils.isEmpty(userBrowser) ? "获取浏览器名失败" : userBrowser);
         sysLog.setOperateUrl(StringUtils.isEmpty(url) ? "获取URL失败" : url);
-
+        sysLogThreadLocal.set(sysLog);
         // 增加访问量
         sysView.setIp(StringUtils.isEmpty(ip) ? "0.0.0.0" : ip);
-        sysView.setCreateBy(LocalDateTime.now());
+        sysView.setCreateTime(LocalDateTime.now());
         sysService.addView(sysView);
 
         return true;
@@ -56,27 +57,22 @@ public class ForeInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
+        SysLog sysLog = sysLogThreadLocal.get();
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
             // 保存日志信息
             sysLog.setRemark(method.getName());
-            sysLog.setCreateBy(LocalDateTime.now());
+            sysLog.setCreateTime(LocalDateTime.now());
             sysService.addLog(sysLog);
-
         } else {
             String uri = request.getRequestURI();
             sysLog.setRemark(uri);
-            sysLog.setCreateBy(LocalDateTime.now());
+            sysLog.setCreateTime(LocalDateTime.now());
             sysService.addLog(sysLog);
         }
+        sysLogThreadLocal.remove();
 
-//        HandlerMethod handlerMethod = (HandlerMethod) handler;
-//        Method method = handlerMethod.getMethod();
-
-        // 保存日志信息
-//        sysLog.setRemark(method.getName());
-//        sysService.addLog(sysLog);
     }
 
     @Override

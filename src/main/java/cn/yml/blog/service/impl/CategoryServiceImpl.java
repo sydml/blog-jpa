@@ -1,10 +1,10 @@
 package cn.yml.blog.service.impl;
 
+import cn.yml.blog.domain.Category;
 import cn.yml.blog.dto.ArticleCategoryDto;
 import cn.yml.blog.domain.ArticleCategory;
-import cn.yml.blog.domain.CategoryInfo;
-import cn.yml.blog.repository.ArticleCategoryRepository;
-import cn.yml.blog.repository.CategoryInfoRepository;
+import cn.yml.blog.repository.ArticleCategoryRelRepository;
+import cn.yml.blog.repository.CategoryRepository;
 import cn.yml.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,20 +21,20 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    private CategoryInfoRepository categoryInfoRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private ArticleCategoryRepository articleCategoryRepository;
+    private ArticleCategoryRelRepository articleCategoryRelRepository;
 
     /**
      * 增加一条分类数据
      *
-     * @param categoryInfo
+     * @param category
      */
     @Override
-    public void addCategory(CategoryInfo categoryInfo) {
-        categoryInfo.setNumber(0);
-        categoryInfoRepository.save(categoryInfo);
+    public void addCategory(Category category) {
+        category.setNumber(0);
+        categoryRepository.save(category);
     }
 
     /**
@@ -45,9 +45,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategoryById(Long id) {
         // 先删除ArticleCategory表中的相关内容
-        articleCategoryRepository.deleteByCategoryId(id);
+        articleCategoryRelRepository.deleteByCategoryId(id);
         // 再删除CategoryInfo表中的内容
-        categoryInfoRepository.deleteById(id);
+        categoryRepository.deleteById(id);
     }
 
 
@@ -58,17 +58,17 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void updateArticleCategory(ArticleCategory articleCategory) {
-        articleCategoryRepository.save(articleCategory);
+        articleCategoryRelRepository.save(articleCategory);
     }
 
     /**
      * 更新分类信息
      *
-     * @param categoryInfo
+     * @param category
      */
     @Override
-    public void updateCategory(CategoryInfo categoryInfo) {
-        categoryInfoRepository.save(categoryInfo);
+    public void updateCategory(Category category) {
+        categoryRepository.save(category);
     }
 
     /**
@@ -78,9 +78,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public CategoryInfo getOneById(Long id) {
-        CategoryInfo categoryInfo = categoryInfoRepository.getOne(id);
-        return categoryInfo;
+    public Category getOneById(Long id) {
+        Category category = categoryRepository.findById(id).orElse(null);
+        return category;
     }
 
     /**
@@ -89,9 +89,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public List<CategoryInfo> listAllCategory() {
+    public List<Category> listAllCategory() {
         // 无条件查询即返回所有
-        return categoryInfoRepository.findAll();
+        return categoryRepository.findAll();
     }
 
     /**
@@ -104,14 +104,14 @@ public class CategoryServiceImpl implements CategoryService {
     public ArticleCategoryDto getCategoryByArticleId(Long id) {
         ArticleCategoryDto articleCategoryDto = new ArticleCategoryDto();
         // 填充tbl_article_category中的基础数据
-        ArticleCategory articleCategory = articleCategoryRepository.findByArticleId(id);
+        ArticleCategory articleCategory = articleCategoryRelRepository.findByArticleId(id);
         articleCategoryDto.setArticleId(articleCategory.getArticleId());
         articleCategoryDto.setId(articleCategory.getId());
         articleCategoryDto.setCategoryId(articleCategory.getCategoryId());
         // 填充对应的分类信息
-        CategoryInfo categoryInfo = getOneById(articleCategory.getCategoryId());
-        articleCategoryDto.setName(categoryInfo.getName());
-        articleCategoryDto.setNumber(categoryInfo.getNumber());
+        Category category = getOneById(articleCategory.getCategoryId());
+        articleCategoryDto.setName(category.getName());
+        articleCategoryDto.setNumber(category.getNumber());
         return articleCategoryDto;
     }
 

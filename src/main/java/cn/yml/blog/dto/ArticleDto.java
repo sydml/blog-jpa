@@ -6,44 +6,42 @@ import java.time.LocalDateTime;
 
 /**
  * 文章信息类
- * 说明：关联了tbl_article_info/tbl_article_content/tbl_article_category/tbl_category_info/
- * tbl_article_picture五张表的基础字段
+ * 说明：关联了article/article_content/article_category_rel/category/
+ * article_picture五张表的基础字段
  *
- * @author:wmyskxz
- * @create:2018-06-19-下午 14:13
  */
 public class ArticleDto {
 
-    // tbl_article_info基础字段
+    //article基础字段
     private Long id;
     private String title;
     private String summary;
     private Boolean isTop;
     private Integer traffic;
-    private LocalDateTime createBy;
+    private LocalDateTime createTime;
 
-    // tbl_article_content基础字段
+    // article_content基础字段
     private Long articleContentId;
     private String content;
 
-    // tbl_category_info基础字段
+    // category基础字段
     private Long categoryId;
     private String categoryName;
     private Integer categoryNumber;
 
-    // tbl_article_category基础字段
+    // article_category_rel基础字段
     private Long articleCategoryId;
 
-    // tbl_article_picture基础字段
+    // article_picture基础字段
     private Long articlePictureId;
     private String pictureUrl;
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

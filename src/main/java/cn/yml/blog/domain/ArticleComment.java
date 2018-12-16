@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 @Entity
-@Table(name="tbl_article_comment")
+@Table(name="article_comment_rel")
 public class ArticleComment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +16,8 @@ public class ArticleComment implements Serializable {
     @Column(name="comment_Id")
     private Long commentId;
 
-    @Column(name="create_by")
-    private LocalDateTime createBy;
+    @Column(name="create_time")
+    private LocalDateTime createTime;
 
     @Column(name="is_effective")
     private Boolean isEffective=true;
@@ -46,12 +46,12 @@ public class ArticleComment implements Serializable {
         this.commentId = commentId;
     }
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
     public Boolean getIsEffective() {

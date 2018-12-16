@@ -3,7 +3,7 @@ package cn.yml.blog.service.impl;
 import cn.yml.blog.domain.ArticleComment;
 import cn.yml.blog.domain.Comment;
 import cn.yml.blog.dto.ArticleCommentDto;
-import cn.yml.blog.repository.ArticleCommentRepository;
+import cn.yml.blog.repository.ArticleCommentRelRepository;
 import cn.yml.blog.repository.CommentRepository;
 import cn.yml.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private ArticleCommentRepository articleCommentRepository;
+    private ArticleCommentRelRepository articleCommentRelRepository;
 
     /**
      * 增加一条留言信息
@@ -52,15 +52,15 @@ public class CommentServiceImpl implements CommentService {
         comment.setName(articleCommentDto.getName());
         comment.setEmail(articleCommentDto.getEmail());
         comment.setContent(articleCommentDto.getContent());
-        comment.setCreateBy(LocalDateTime.now());
+        comment.setCreateTime(LocalDateTime.now());
         addComment(comment);
         // 再更新tbl_article_comment作关联
         Long lastestCommentId = commentRepository.findLastId();
         ArticleComment articleComment = new ArticleComment();
         articleComment.setCommentId(lastestCommentId);
         articleComment.setArticleId(articleCommentDto.getArticleId());
-        articleComment.setCreateBy(LocalDateTime.now());
-        articleCommentRepository.save(articleComment);
+        articleComment.setCreateTime(LocalDateTime.now());
+        articleCommentRelRepository.save(articleComment);
     }
 
     /**
@@ -71,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public void deleteCommentById(Long id) {
-        Comment comment = commentRepository.getOne(id);
+        Comment comment = commentRepository.findById(id).orElse(null);
         comment.setIsEffective(false);
         commentRepository.save(comment);
     }
@@ -86,9 +86,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteArticleCommentById(Long id) {
         // 设置ArticleComment表中的字段为false
-        ArticleComment articleComment = articleCommentRepository.getOne(id);
+        ArticleComment articleComment = articleCommentRelRepository.findById(id).orElse(null);
         articleComment.setIsEffective(false);
-        articleCommentRepository.save(articleComment);
+        articleCommentRelRepository.save(articleComment);
         // 删除Comment表中对应的数据
         deleteCommentById(articleComment.getCommentId());
     }
@@ -114,16 +114,16 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<ArticleCommentDto> listAllArticleCommentById(Long id) {
         List<ArticleCommentDto> comments = new ArrayList<>();
-        List<ArticleComment> articleComments = articleCommentRepository.findByArticleId(id);
+        List<ArticleComment> articleComments = articleCommentRelRepository.findByArticleId(id);
         // 填充对应的评论信息
         for (ArticleComment articleComment : articleComments) {
             if (true == articleComment.getIsEffective()) {
                 ArticleCommentDto articleCommentDto = new ArticleCommentDto();
                 articleCommentDto.setArticleCommentId(articleComment.getId());
                 articleCommentDto.setArticleId(articleComment.getArticleId());
-                articleCommentDto.setCreateBy(articleComment.getCreateBy());
+                articleCommentDto.setCreateBy(articleComment.getCreateTime());
                 // 查询对应的评论信息
-                Comment comment = commentRepository.getOne(articleComment.getCommentId());
+                Comment comment = commentRepository.findById(articleComment.getCommentId()).orElse(null);
                 articleCommentDto.setId(comment.getId());
                 articleCommentDto.setContent(comment.getContent());
                 articleCommentDto.setEmail(comment.getEmail());

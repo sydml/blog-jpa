@@ -8,7 +8,7 @@ import java.util.List;
  * @author Liuym
  * @date 2018/12/15 0015
  */
-public interface ArticleCategoryRepository extends JpaPartitionRepository<ArticleCategory, Long> {
+public interface ArticleCategoryRelRepository extends JpaPartitionRepository<ArticleCategory, Long> {
     /**
      * 一片文章只能有一个分类，通过文章外键应该只能找到一篇文章分类，多个应该报错，此处希望用注解解决多个抛出异常提醒
      * @param articleId

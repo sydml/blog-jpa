@@ -17,8 +17,8 @@ public class SysView implements Serializable {
 
     private String ip;
 
-    @Column(name="create_by")
-    private LocalDateTime createBy;
+    @Column(name="create_time")
+    private LocalDateTime createTime;
 
     public Long getId() {
         return id;
@@ -36,11 +36,11 @@ public class SysView implements Serializable {
         this.ip = ip == null ? null : ip.trim();
     }
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime create_time) {
+        this.createTime = create_time;
     }
 }

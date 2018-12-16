@@ -80,7 +80,7 @@ public class ForeController extends BaseController {
      */
     @ApiOperation("获取所有分类信息")
     @GetMapping("category/list")
-    public List<CategoryInfo> listAllCategoryInfo() {
+    public List<Category> listAllCategoryInfo() {
         return categoryService.listAllCategory();
     }
 
@@ -147,7 +147,7 @@ public class ForeController extends BaseController {
 
         String ip = request.getRemoteAddr();
         comment.setIp(ip);
-        comment.setCreateBy(LocalDateTime.now());
+        comment.setCreateTime(LocalDateTime.now());
         commentService.addComment(comment);
 
         return null;

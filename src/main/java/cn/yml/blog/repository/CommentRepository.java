@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface CommentRepository extends JpaPartitionRepository<Comment, Long> {
 
-    @Query(value = "select max(id) from tbl_comment", nativeQuery = true)
+    @Query(value = "select max(id) from comment", nativeQuery = true)
     Long findLastId();
 }

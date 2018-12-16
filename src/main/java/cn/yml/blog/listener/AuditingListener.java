@@ -19,8 +19,8 @@ public class AuditingListener {
         if (target instanceof AbstractDomain) {
             AbstractDomain model = (AbstractDomain) target;
             LocalDateTime now = LocalDateTime.now();
-            model.setCreateBy(now);
-            model.setModifiedBy(now);
+            model.setCreateTime(now);
+            model.setModifyTime(now);
         }
     }
 
@@ -28,7 +28,7 @@ public class AuditingListener {
     public void touchForUpdate(Object target) {
         if (target instanceof AbstractDomain) {
             AbstractDomain model = (AbstractDomain) target;
-            model.setModifiedBy(LocalDateTime.now());
+            model.setModifyTime(LocalDateTime.now());
         }
     }
 }

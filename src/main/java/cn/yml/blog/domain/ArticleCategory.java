@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @date 2018/12/15 0015
  */
 @Entity
-@Table(name="tbl_article_category")
+@Table(name="article_category_rel")
 public class ArticleCategory extends AbstractDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

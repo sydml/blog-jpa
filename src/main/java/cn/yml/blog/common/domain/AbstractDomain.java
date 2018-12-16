@@ -16,25 +16,25 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingListener.class)
 public class AbstractDomain implements Serializable {
 
-    @Column(name="create_by")
-    private LocalDateTime createBy;
+    @Column(name="create_time")
+    private LocalDateTime createTime;
 
-    @Column(name="modified_by")
-    private LocalDateTime modifiedBy;
+    @Column(name="modify_time")
+    private LocalDateTime modifyTime;
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
-    public LocalDateTime getModifiedBy() {
-        return modifiedBy;
+    public LocalDateTime getModifyTime() {
+        return modifyTime;
     }
 
-    public void setModifiedBy(LocalDateTime modifiedBy) {
-        this.modifiedBy = modifiedBy;
+    public void setModifyTime(LocalDateTime modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

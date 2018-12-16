@@ -3,18 +3,16 @@ package cn.yml.blog.dto;
 /**
  * 带题图信息的文章基础信息分装类
  *
- * @author:wmyskxz
- * @create:2018-06-19-下午 14:53
  */
 public class ArticleWithPictureDto {
-    // tbl_article_info基础字段
+    // article基础字段
     private Long id;
     private String title;
     private String summary;
     private Boolean isTop;
     private Integer traffic;
 
-    // tbl_article_picture基础字段
+    // article_picture基础字段
     private Long articlePictureId;
     private String pictureUrl;
 

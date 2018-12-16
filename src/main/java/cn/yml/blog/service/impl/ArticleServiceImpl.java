@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,19 +31,19 @@ public class ArticleServiceImpl implements ArticleService {
 	private BeanMapper beanMapper;
 
 	@Autowired
-	private ArticleInfoRepository articleInfoRepository;
+	private ArticleRepository articleRepository;
 
 	@Autowired
 	private ArticlePictureRepository articlePictureRepository;
 
 	@Autowired
-	private ArticleCategoryRepository articleCategoryRepository;
+	private ArticleCategoryRelRepository articleCategoryRelRepository;
 
 	@Autowired
 	private ArticleContentRepository articleContentRepository;
 
 	@Autowired
-	private CategoryInfoRepository categoryInfoRepository;
+	private CategoryRepository categoryRepository;
 
 
 	/**
@@ -55,11 +56,11 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void addArticle(ArticleDto articleDto) {
 		// 增加文章信息表 - title/summary
-		ArticleInfo articleInfo = new ArticleInfo();
-		articleInfo.setTitle(articleDto.getTitle());
-		articleInfo.setSummary(articleDto.getSummary());
-		articleInfo.setTraffic(0);
-		articleInfoRepository.save(articleInfo);
+		Article article = new Article();
+		article.setTitle(articleDto.getTitle());
+		article.setSummary(articleDto.getSummary());
+		article.setTraffic(0);
+		articleRepository.save(article);
 		// 获取刚才插入文章信息的ID
 		Long articleId = getArticleLastestId();
 		// 增加文章题图信息 - pictureUrl/articleId
@@ -76,9 +77,9 @@ public class ArticleServiceImpl implements ArticleService {
 		ArticleCategory articleCategory = new ArticleCategory();
 		articleCategory.setArticleId(articleId);
 		articleCategory.setCategoryId(articleDto.getCategoryId());
-		articleCategoryRepository.save(articleCategory);
+		articleCategoryRelRepository.save(articleCategory);
 		// 对应文章的数量要加1
-		categoryInfoRepository.updateNumberById(articleCategory.getCategoryId(), 1);
+		categoryRepository.updateNumberById(articleCategory.getCategoryId(), 1);
 	}
 
 	/**
@@ -91,15 +92,15 @@ public class ArticleServiceImpl implements ArticleService {
 	public void deleteArticleById(Long id) {
 		ArticleDto articleDto = getOneById(id);
 		// 删除文章信息中的数据
-		articleInfoRepository.deleteById(articleDto.getId());
+		articleRepository.deleteById(articleDto.getId());
 		// 删除文章题图信息数据
 		articlePictureRepository.deleteById(articleDto.getArticlePictureId());
 		// 删除文章内容信息表
 		articleContentRepository.deleteById(articleDto.getArticleContentId());
 		// 删除文章分类信息表
-		articleCategoryRepository.deleteById(articleDto.getArticleCategoryId());
+		articleCategoryRelRepository.deleteById(articleDto.getArticleCategoryId());
 		// 扣减文章分类信息的数量
-		categoryInfoRepository.updateNumberById(articleDto.getCategoryId(),-1);
+		categoryRepository.updateNumberById(articleDto.getCategoryId(),-1);
 	}
 
 	/**
@@ -110,14 +111,14 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	public void updateArticleCategory(Long articleId, Long categoryId) {
-		ArticleCategory articleCategory = articleCategoryRepository.getOne(articleId);
+		ArticleCategory articleCategory = articleCategoryRelRepository.findById(articleId).orElse(null);
 		// 减少被修改文章分类的分类下的文章数目,算的时候避免并发，采用SQL动态更新number
-		categoryInfoRepository.updateNumberById(articleCategory.getCategoryId(),-1);
+		categoryRepository.updateNumberById(articleCategory.getCategoryId(),-1);
 		//增加文章加入的分类下的文章数目
-		categoryInfoRepository.updateNumberById(categoryId,1);
+		categoryRepository.updateNumberById(categoryId,1);
 		// 把文章分类的分类设置为更新后的分类
 		articleCategory.setCategoryId(categoryId);
-		articleCategoryRepository.save(articleCategory);
+		articleCategoryRelRepository.save(articleCategory);
 	}
 
 	/**
@@ -130,13 +131,11 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void updateArticle(ArticleDto articleDto) {
 		// 更新文章信息中的数据
-		ArticleInfo articleInfo = new ArticleInfo();
-		articleInfo.setId(articleDto.getId());
-		articleInfo.setTitle(articleDto.getTitle());
-		articleInfo.setSummary(articleDto.getSummary());
-		articleInfo.setIsTop(articleDto.getTop());
-		articleInfo.setTraffic(articleDto.getTraffic());
-		articleInfoRepository.save(articleInfo);
+		Article article = articleRepository.findById(articleDto.getId()).orElse(null);
+		article.setTitle(articleDto.getTitle());
+		article.setSummary(articleDto.getSummary());
+		article.setIsTop(articleDto.getTop());
+		articleRepository.save(article);
 		// 更新文章题图信息数据
 		ArticlePicture articlePicture = articlePictureRepository.findByArticleId(articleDto.getId());
 		articlePicture.setPictureUrl(articleDto.getPictureUrl());
@@ -146,9 +145,9 @@ public class ArticleServiceImpl implements ArticleService {
 		articleContent.setContent(articleDto.getContent());
 		articleContentRepository.save(articleContent);
 		// 更新文章分类信息表
-		ArticleCategory articleCategory = articleCategoryRepository.findByArticleId(articleDto.getId());
+		ArticleCategory articleCategory = articleCategoryRelRepository.findByArticleId(articleDto.getId());
 		articleCategory.setCategoryId(articleDto.getCategoryId());
-		articleCategoryRepository.save(articleCategory);
+		articleCategoryRelRepository.save(articleCategory);
 	}
 
 	/**
@@ -163,15 +162,15 @@ public class ArticleServiceImpl implements ArticleService {
 	public ArticleDto getOneById(Long id) {
 		ArticleDto articleDto = new ArticleDto();
 		// 填充文章基础信息
-		ArticleInfo articleInfo = articleInfoRepository.getOne(id);
-		articleDto.setId(articleInfo.getId());
-		articleDto.setTitle(articleInfo.getTitle());
-		articleDto.setSummary(articleInfo.getSummary());
-		articleDto.setTop(articleInfo.getIsTop());
-		articleDto.setCreateBy(articleInfo.getCreateBy());
+		Article article = articleRepository.findById(id).orElse(null);
+		articleDto.setId(article.getId());
+		articleDto.setTitle(article.getTitle());
+		articleDto.setSummary(article.getSummary());
+		articleDto.setTop(article.getIsTop());
+		articleDto.setCreateTime(article.getCreateTime());
 		// 文章访问量要加1
-		articleDto.setTraffic(articleInfo.getTraffic() + 1);
-		articleInfoRepository.updateTrafficById(id,1);
+		articleDto.setTraffic(article.getTraffic() + 1);
+		articleRepository.updateTrafficById(id,1);
 		// 填充文章内容信息
 		ArticleContent articleContent = articleContentRepository.findByArticleId(id);
 		articleDto.setContent(articleContent.getContent());
@@ -181,13 +180,13 @@ public class ArticleServiceImpl implements ArticleService {
 		articleDto.setPictureUrl(articlePicture.getPictureUrl());
 		articleDto.setArticlePictureId(articlePicture.getId());
 		// 填充文章分类信息
-		ArticleCategory articleCategory = articleCategoryRepository.findByArticleId(id);
+		ArticleCategory articleCategory = articleCategoryRelRepository.findByArticleId(id);
 		articleDto.setArticleCategoryId(articleCategory.getId());
 		// 填充文章分类基础信息
-		CategoryInfo categoryInfo = categoryInfoRepository.getOne(articleCategory.getCategoryId());
-		articleDto.setCategoryId(categoryInfo.getId());
-		articleDto.setCategoryName(categoryInfo.getName());
-		articleDto.setCategoryNumber(categoryInfo.getNumber());
+		Category category = categoryRepository.findById(articleCategory.getCategoryId()).orElse(null);
+		articleDto.setCategoryId(category.getId());
+		articleDto.setCategoryName(category.getName());
+		articleDto.setCategoryNumber(category.getNumber());
 		return articleDto;
 	}
 
@@ -222,18 +221,21 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	public List<ArticleWithPictureDto> listByCategoryId(Long id) {
-		List<ArticleCategory> articleCategories = articleCategoryRepository.findByCategoryId(id);
+		List<ArticleCategory> articleCategories = articleCategoryRelRepository.findByCategoryId(id);
 		List<ArticleWithPictureDto> articles = new ArrayList<>();
 		for (int i = 0; i < articleCategories.size(); i++) {
 			Long articleId = articleCategories.get(i).getArticleId();
 			ArticleWithPictureDto articleWithPictureDto = new ArticleWithPictureDto();
 			// 填充文章基础信息
-			ArticleInfo articleInfo = articleInfoRepository.getOne(articleId);
-			articleWithPictureDto.setId(articleInfo.getId());
-			articleWithPictureDto.setTitle(articleInfo.getTitle());
-			articleWithPictureDto.setSummary(articleInfo.getSummary());
-			articleWithPictureDto.setTop(articleInfo.getIsTop());
-			articleWithPictureDto.setTraffic(articleInfo.getTraffic());
+			Article article = articleRepository.findById(articleId).orElse(null);
+			if (article == null) {
+				continue;
+			}
+			articleWithPictureDto.setId(article.getId());
+			articleWithPictureDto.setTitle(article.getTitle());
+			articleWithPictureDto.setSummary(article.getSummary());
+			articleWithPictureDto.setTop(article.getIsTop());
+			articleWithPictureDto.setTraffic(article.getTraffic());
 			// 填充文章图片信息
 			ArticlePicture articlePicture = articlePictureRepository.findByArticleId(articleId);
 			articleWithPictureDto.setArticlePictureId(articlePicture.getId());
@@ -286,7 +288,7 @@ public class ArticleServiceImpl implements ArticleService {
 	 * @return
 	 */
 	private Long getArticleLastestId() {
-		return articleInfoRepository.findMaxId();
+		return articleRepository.findMaxId();
 	}
 
 	/**
@@ -307,24 +309,24 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	private List<ArticleWithPictureDto> listAllArticleWithPicture() {
 		// 无添加查询即返回所有
-		Sort sort = new Sort(Sort.Direction.DESC,"is_top","id");
-		List<ArticleInfo> articleInfos = articleInfoRepository.findAll();
-		List<ArticleWithPictureDto> articles = new ArrayList<>();
-		for (ArticleInfo articleInfo : articleInfos) {
+		Sort sort = new Sort(Sort.Direction.DESC,"isTop","id");
+		List<Article> articles = articleRepository.findAll(sort);
+		List<ArticleWithPictureDto> articleWithPictureDtos = new ArrayList<>();
+		for (Article article : articles) {
 			ArticleWithPictureDto articleWithPictureDto = new ArticleWithPictureDto();
 			// 填充文章基础信息
-			articleWithPictureDto.setId(articleInfo.getId());
-			articleWithPictureDto.setTitle(articleInfo.getTitle());
-			articleWithPictureDto.setSummary(articleInfo.getSummary());
-			articleWithPictureDto.setTop(articleInfo.getIsTop());
-			articleWithPictureDto.setTraffic(articleInfo.getTraffic());
+			articleWithPictureDto.setId(article.getId());
+			articleWithPictureDto.setTitle(article.getTitle());
+			articleWithPictureDto.setSummary(article.getSummary());
+			articleWithPictureDto.setTop(article.getIsTop());
+			articleWithPictureDto.setTraffic(article.getTraffic());
 			// 填充文章题图信息
-			ArticlePicture articlePicture = articlePictureRepository.findByArticleId(articleInfo.getId());
+			ArticlePicture articlePicture = articlePictureRepository.findByArticleId(article.getId());
 			articleWithPictureDto.setArticlePictureId(articlePicture.getId());
 			articleWithPictureDto.setPictureUrl(articlePicture.getPictureUrl());
-			articles.add(articleWithPictureDto);
+			articleWithPictureDtos.add(articleWithPictureDto);
 		}
-		return articles;
+		return articleWithPictureDtos;
 	}
 
 }

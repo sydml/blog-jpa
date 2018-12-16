@@ -145,8 +145,8 @@ public class BackController extends BaseController {
     @ApiOperation("增加分类信息")
     @ApiImplicitParam(name = "name", value = "分类名称", required = true, dataType = "String")
     @PostMapping("category")
-    public String addCategoryInfo(@RequestBody CategoryInfo categoryInfo) {
-        categoryService.addCategory(categoryInfo);
+    public String addCategoryInfo(@RequestBody Category category) {
+        categoryService.addCategory(category);
         return null;
     }
 
@@ -162,8 +162,8 @@ public class BackController extends BaseController {
             @ApiImplicitParam(name = "name", value = "分类名称", required = true, dataType = "String")
     })
     @PutMapping("category/{id}")
-    public String updateCategoryInfo(@PathVariable Long id, @RequestBody CategoryInfo categoryInfo) {
-        categoryService.updateCategory(categoryInfo);
+    public String updateCategoryInfo(@PathVariable Long id, @RequestBody Category category) {
+        categoryService.updateCategory(category);
         return null;
     }
 
@@ -190,7 +190,7 @@ public class BackController extends BaseController {
     @ApiOperation("获取某一条分类信息")
     @ApiImplicitParam(name = "id", value = "分类ID", required = true, dataType = "Long", paramType="path")
     @GetMapping("category/{id}")
-    public CategoryInfo getCategoryInfo(@PathVariable Long id) {
+    public Category getCategoryInfo(@PathVariable Long id) {
         return categoryService.getOneById(id);
     }
 

@@ -2,10 +2,8 @@ package cn.yml.blog.dto;
 
 /**
  * 文章分类传输对象
- * 说明：关联了tbl_article_category和tbl_category_info两张表的数据
+ * 说明：关联了article_category_rel和category两张表的数据
  *
- * @author:wmyskxz
- * @create:2018-06-20-上午 8:45
  */
 public class ArticleCategoryDto {
 
