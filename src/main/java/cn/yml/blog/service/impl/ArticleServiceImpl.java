@@ -19,7 +19,7 @@ import java.util.List;
  * 文章Service实现类
  * 说明：ArticleInfo里面封装了picture/content/category等信息
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-19-上午 9:29
  */
 @Service

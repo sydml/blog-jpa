@@ -12,7 +12,7 @@ $(document).ready(function () {
                 $('#tbody-visits').append(
                     '<tr><td>' + item.id +
                     '</td><td>' + item.ip +
-                    '</td><td>' + item.createBy + '</td></tr>');
+                    '</td><td>' + item.createTime + '</td></tr>');
             });
             $('#dataTables-visits').dataTable();
         }
@@ -29,7 +29,7 @@ $(document).ready(function () {
                 $('#tbody-logs').append(
                     '<tr><td>' + item.id +
                     '</td><td>' + item.ip +
-                    '</td><td>' + item.createBy +
+                    '</td><td>' + item.createTime +
                     '</td><td>' + item.remark +
                     '</td><td>' + item.operateUrl +
                     '</td><td>' + item.operateBy + '</td></tr>');
@@ -49,7 +49,7 @@ $(document).ready(function () {
                 $('#tbody-comments').append(
                     '<tr><td>' + item.id +
                     '</td><td>' + item.content +
-                    '</td><td>' + item.createBy +
+                    '</td><td>' + item.createTime +
                     '</td><td>' + item.name +
                     '</td><td>' + item.email +
                     '</td><td>' + item.ip +

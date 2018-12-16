@@ -10,7 +10,7 @@ window.onload = function () {
             // 解析json对象，并向页面添加数据
 
             $("#articleTitle").html(json.title);
-            $("#articleCreateBy").html(json.createBy);
+            $("#articleCreateBy").html(json.createTime);
             $("#articleContent").html(json.content);
             Prism.highlightAll();
             $("#articlePicture").attr("src", json.pictureUrl);
@@ -27,7 +27,7 @@ window.onload = function () {
             $.each(json, function (i, item) {
                 $('#commentList').append(
                     '<div class="comment">' +
-                    '<label class="commentName">' + item.name + '</label> <label class="commentTime">' + item.createBy + '</label><br />' +
+                    '<label class="commentName">' + item.name + '</label> <label class="commentTime">' + item.createTime + '</label><br />' +
                     '<lable class="commentContent">' + item.content + '</lable>' +
                     '</div></div>'
                 );

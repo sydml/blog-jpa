@@ -1,11 +1,13 @@
 package cn.yml.blog.util;
 
+import org.springframework.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用于从Request请求中获取到客户端的获取操作系统,浏览器及浏览器版本信息
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-21-上午 8:40
  */
 public class BrowserUtil {
@@ -17,6 +19,9 @@ public class BrowserUtil {
      */
     public static String getOsAndBrowserInfo(HttpServletRequest request) {
         String browserDetails = request.getHeader("User-Agent");
+        if (StringUtils.isEmpty(browserDetails)) {
+            return null;
+        }
         String userAgent = browserDetails;
         String user = userAgent.toLowerCase();
 

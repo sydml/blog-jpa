@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * Markdown转Html工具类
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-21-上午 10:09
  */
 public class Markdown2HtmlUtil {

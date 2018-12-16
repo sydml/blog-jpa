@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 说明：更改编码为UTF-8
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-19-上午 10:49
  */
 @Configuration

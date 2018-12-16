@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * Swagger2 配置类
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-14-上午 10:40
  */
 @Configuration
@@ -32,7 +32,7 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Wmyskxz个人博客RESTful APIs")
+                .title("Liuym个人博客RESTful APIs")
                 .description("原文地址链接：http://blog.didispace.com/springbootswagger2/")
                 .termsOfServiceUrl("http://blog.didispace.com/")
                 .contact("@落叶季节")

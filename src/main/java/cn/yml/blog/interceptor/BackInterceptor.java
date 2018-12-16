@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  * 后台拦截器
  * 说明：对/admin开头的地址进行拦截，必须经过验证之后才能够访问
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-20-下午 18:47
  */
 public class BackInterceptor implements HandlerInterceptor {

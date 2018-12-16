@@ -199,18 +199,6 @@ CREATE TABLE `sys_log`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2673 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_log
--- ----------------------------
-INSERT INTO `sys_log` VALUES (2665, '0:0:0:0:0:0:0:1', '2018-12-16 15:45:23', '/index.html', 'http://localhost/index.html', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:45:23');
-INSERT INTO `sys_log` VALUES (2666, '0:0:0:0:0:0:0:1', '2018-12-16 15:46:37', 'listLastestArticle', 'http://localhost/api/article/list/lastest', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:46:37');
-INSERT INTO `sys_log` VALUES (2667, '0:0:0:0:0:0:0:1', '2018-12-16 15:46:49', '/article.html', 'http://localhost/article.html', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:46:50');
-INSERT INTO `sys_log` VALUES (2668, '0:0:0:0:0:0:0:1', '2018-12-16 15:46:57', 'listMessageByArticleId', 'http://localhost/api/comment/article/8', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:46:58');
-INSERT INTO `sys_log` VALUES (2669, '0:0:0:0:0:0:0:1', '2018-12-16 15:47:00', 'getArticleById', 'http://localhost/api/article/8', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:47:00');
-INSERT INTO `sys_log` VALUES (2670, '0:0:0:0:0:0:0:1', '2018-12-16 15:47:23', '/blog.html', 'http://localhost/blog.html', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:47:23');
-INSERT INTO `sys_log` VALUES (2671, '0:0:0:0:0:0:0:1', '2018-12-16 15:47:29', 'listAllCategoryInfo', 'http://localhost/api/category/list/', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:47:29');
-INSERT INTO `sys_log` VALUES (2672, '0:0:0:0:0:0:0:1', '2018-12-16 15:47:33', 'listAllArticleInfo', 'http://localhost/api/article/list', 'Windows-Chrome-71.0.3578.98', '2018-12-16 15:47:34');
-
--- ----------------------------
 -- Table structure for sys_view
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_view`;

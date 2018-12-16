@@ -10,8 +10,8 @@ $(document).ready(function() {
 					'<tr><td>' + +item.id +
 					'</td><td>' + item.name +
 					'</td><td>' + item.number +
-					'</td><td>' + item.createBy +
-					'</td><td>' + item.modifiedBy +
+					'</td><td>' + item.createTime +
+					'</td><td>' + item.modifyTime +
 					'</td><td><button class="btn btn-danger deleteBtn" onclick="deleteCategory(\'' + item.id + '\')"><i class="fa fa-trash-o"></i>删除</button></td></tr>');
 				$('#select-category').append(
 					'<option categoryId="' + item.id + '">' + item.name + '</option>'

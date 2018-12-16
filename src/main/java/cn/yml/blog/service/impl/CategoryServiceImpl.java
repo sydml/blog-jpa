@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 分类Service实现类
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-19-上午 8:46
  */
 @Service
@@ -68,7 +68,9 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void updateCategory(Category category) {
-        categoryRepository.save(category);
+        Category oldCategory = categoryRepository.findById(category.getId()).orElse(null);
+        oldCategory.setName(category.getName());
+        categoryRepository.save(oldCategory);
     }
 
     /**

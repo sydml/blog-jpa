@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  * 前台拦截器
  * 说明：用于对访问数量进行统计
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-20-下午 20:12
  */
 public class ForeInterceptor implements HandlerInterceptor {

@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * 实现跨域
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-21-下午 22:48
  */
 @Component

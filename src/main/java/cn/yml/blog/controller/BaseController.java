@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 基础控制器，包含了Controller层中共有的一些Service
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-19-上午 11:25
  */
 public class BaseController {

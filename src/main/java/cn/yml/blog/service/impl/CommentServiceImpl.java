@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 留言/评论Service实现类
  *
- * @author:wmyskxz
+ * @author:Liuym
  * @create:2018-06-17-上午 10:54
  */
 @Service
@@ -73,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
     public void deleteCommentById(Long id) {
         Comment comment = commentRepository.findById(id).orElse(null);
         comment.setIsEffective(false);
-        commentRepository.save(comment);
+        commentRepository.delete(comment);
     }
 
     /**
@@ -121,7 +121,7 @@ public class CommentServiceImpl implements CommentService {
                 ArticleCommentDto articleCommentDto = new ArticleCommentDto();
                 articleCommentDto.setArticleCommentId(articleComment.getId());
                 articleCommentDto.setArticleId(articleComment.getArticleId());
-                articleCommentDto.setCreateBy(articleComment.getCreateTime());
+                articleCommentDto.setCreateTime(articleComment.getCreateTime());
                 // 查询对应的评论信息
                 Comment comment = commentRepository.findById(articleComment.getCommentId()).orElse(null);
                 articleCommentDto.setId(comment.getId());

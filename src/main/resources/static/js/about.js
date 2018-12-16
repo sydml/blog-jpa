@@ -8,7 +8,7 @@ window.onload = function () {
             $.each(json, function (i, item) {
                 $('#commentList').append(
                     '<div class="comment">' +
-                    '<label class="commentName">' + item.name + '</label> <label class="commentTime">' + item.createBy + '</label><br />' +
+                    '<label class="commentName">' + item.name + '</label> <label class="commentTime">' + item.createTime + '</label><br />' +
                     '<lable class="commentContent">' + item.content + '</lable>' +
                     '</div></div>'
                 );

@@ -3,7 +3,6 @@ package cn.yml.blog.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 文章评论信息
@@ -17,7 +16,7 @@ public class ArticleCommentDto {
     private String name;
     private String email;
     private String ip;
-    private LocalDateTime createBy;
+    private LocalDateTime createTime;
 
     //article_comment基础字段
     private Long articleCommentId;
@@ -81,11 +80,11 @@ public class ArticleCommentDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 
-    public LocalDateTime getCreateBy() {
-        return createBy;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateBy(LocalDateTime createBy) {
-        this.createBy = createBy;
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 }
