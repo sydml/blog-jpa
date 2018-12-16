@@ -11,4 +11,6 @@ import java.util.List;
 public interface ArticleCommentRelRepository extends JpaPartitionRepository<ArticleComment, Long> {
 
     List<ArticleComment> findByArticleId(Long articleId);
+
+    void deleteByCommentId(Long commentId);
 }

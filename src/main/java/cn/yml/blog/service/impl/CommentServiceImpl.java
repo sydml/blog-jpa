@@ -54,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setContent(articleCommentDto.getContent());
         comment.setCreateTime(LocalDateTime.now());
         addComment(comment);
-        // 再更新tbl_article_comment作关联
+        // 再更新article_comment作关联
         Long lastestCommentId = commentRepository.findLastId();
         ArticleComment articleComment = new ArticleComment();
         articleComment.setCommentId(lastestCommentId);
@@ -73,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
     public void deleteCommentById(Long id) {
         Comment comment = commentRepository.findById(id).orElse(null);
         comment.setIsEffective(false);
-        commentRepository.delete(comment);
+        commentRepository.save(comment);
     }
 
     /**
